@@ -3,6 +3,7 @@ import { FaHome } from "react-icons/fa";
 import { PiBooks } from "react-icons/pi";
 import { RiGraduationCapFill } from "react-icons/ri";
 import { IoSettings } from "react-icons/io5";
+import { Link } from 'react-router-dom';
 
 
 function AdminSidebar() {
@@ -15,20 +16,20 @@ function AdminSidebar() {
         <h1 className='text-2xl mb-10'>Joseph Shaju</h1>
         <div className="mb-10">
             <div className="mb-4 flex">
-                <input type="radio" id='home' readOnly/>
-                <label htmlFor="home" className='flex ms-3'><FaHome className='mt-1 me-1'/>Home</label>
+                {/* <input type="radio" id='home' readOnly/> */}
+                <Link to={"/admin-home"}><label htmlFor="home" className='flex ms-3'><FaHome className='mt-1 me-1'/>Home</label></Link>
             </div>
             <div className="mb-4 flex">
-                <input type="radio" id='books' readOnly/>
-                <label htmlFor="books" className='flex ms-3'><PiBooks className='mt-1 me-1'/>Books</label>
+                {/* <input type="radio" id='books' readOnly/> */}
+                <Link to={"/admin-books"}><label htmlFor="books" className='flex ms-3'><PiBooks className='mt-1 me-1'/>Books</label></Link>
             </div>
             <div className="mb-4 flex">
-                <input type="radio" id='careers' readOnly/>
-                <label htmlFor="careers" className='flex ms-3'><RiGraduationCapFill className='mt-1 me-1'/>Careers</label>
+                {/* <input type="radio" id='careers' readOnly/> */}
+                <Link to={"/admin-careers"}><label htmlFor="careers" className='flex ms-3'><RiGraduationCapFill className='mt-1 me-1'/>Careers</label></Link>
             </div>
             <div className="mb-4 flex">
-                <input type="radio" id='settings' readOnly/>
-                <label htmlFor="settings" className='flex ms-3'><IoSettings  className='mt-1 me-1'/>Settings</label>
+                {/* <input type="radio" id='settings' readOnly/> */}
+                <Link to={"/admin-settings"}><label htmlFor="settings" className='flex ms-3'><IoSettings  className='mt-1 me-1'/>Settings</label></Link>
             </div>
         </div>
 

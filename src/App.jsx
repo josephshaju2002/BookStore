@@ -30,22 +30,22 @@ function App() {
       <Routes>
         {/* Common */}
         <Route path={'/'} element={loader ?<Loader/> : <LandingPage />}/>
-        <Route path={'contact'} element={<Contact />}/>
-        <Route path={'login'} element={<Auth />}/>
-        <Route path={'register'} element={<Auth register />}/>
-        <Route path={'*'} element={<Pnf />}/> 
+        <Route path={'/contact'} element={<Contact />}/>
+        <Route path={'/login'} element={<Auth />}/>
+        <Route path={'/register'} element={<Auth register />}/>
+        <Route path={'/*'} element={<Pnf />}/> 
 
         {/* User */}
-        <Route path={'all-books'} element={<AllBooks />} />
-        <Route path={'careers'} element={<Careers />} />
-        <Route path={'profile'} element={<Profile />} />
-        <Route path={'view-books/:id'} element={<ViewBook />} /> 
+        <Route path={'/all-books'} element={<AllBooks />} />
+        <Route path={'/careers'} element={<Careers />} />
+        <Route path={'/profile'} element={<Profile />} />
+        <Route path={'/view-books/:id'} element={<ViewBook />} /> 
 
         {/* Admin */}
-        <Route path={'admin-home'} element={<AdminHome />} />
-        <Route path={'admin-careers'} element={<AdminCareers />} />
-        <Route path={'admin-books'} element={<AdminBooks />} />
-        <Route path={'admin-settings'} element={<AdminSettings />} />
+        <Route path={'/admin-home'} element={<AdminHome />} />
+        <Route path={'/admin-careers'} element={<AdminCareers />} />
+        <Route path={'/admin-books'} element={<AdminBooks />} />
+        <Route path={'/admin-settings'} element={<AdminSettings />} />
       </Routes> 
 
     </>
