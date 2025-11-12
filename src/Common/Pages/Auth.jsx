@@ -3,10 +3,30 @@ import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
+import { registerAPI } from "../../Services/allAPI";
 
 
 function Auth({ register }) {
   const [pass, setPass] = useState(false);
+
+  const [useDetails,setUserDetails] = useState({
+    username:"",
+    email:"",
+    password:""
+  })
+  console.log(useDetails);
+
+  const handleRegister =async () =>{
+    const {username,email,password} = useDetails
+    if (!username || !email || !password){
+      alert("Fill the form completely")
+    }else{
+      const result = await registerAPI(useDetails)
+      console.log(result);
+      
+    }
+  }
+  
   return (
     <>
       <div className="w-full min-h-screen flex justify-center items-center flex-col bg-[url(https://www.baltana.com/files/wallpapers-5/Flower-Background-Wallpaper-16348.jpg)] bg-cover bg-center">
@@ -33,6 +53,8 @@ function Auth({ register }) {
                 <div className="my-5">
                   <label htmlFor="">UserName</label>
                   <input
+                    value={useDetails?.username}
+                    onChange={(e)=>setUserDetails({...useDetails,username: e.target.value})}
                     type="text"
                     placeholder="Username"
                     className="bg-white p-2 w-full rounded mt-2 placeholder-gray-500 text-black"
@@ -42,6 +64,8 @@ function Auth({ register }) {
               <div className="my-5">
                 <label htmlFor="">Email</label>
                 <input
+                  value={useDetails?.email}
+                  onChange={(e)=>setUserDetails({...useDetails,email: e.target.value})}
                   type="email"
                   placeholder="Email"
                   className="bg-white p-2 w-full rounded mt-2 placeholder-gray-500 text-black"
@@ -52,6 +76,8 @@ function Auth({ register }) {
                 <label htmlFor="">Password</label>
                 <div className="flex items-center">
                   <input
+                    value={useDetails?.password}
+                    onChange={(e)=>setUserDetails({...useDetails,password: e.target.value})}
                     type={pass?"text":"password"}
                     placeholder="Password"
                     className="bg-white p-2 w-full rounded placeholder-gray-500 text-black"
@@ -69,6 +95,7 @@ function Auth({ register }) {
               <div className="mt-4">
                 {register ? (
                   <button
+                    onClick={handleRegister}
                     type="button"
                     className="bg-green-700 p-2 w-full rounded"
                   >

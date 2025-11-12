@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../Common/Components/Header'
 import Footer from '../../Common/Components/Footer'
 import { MdVerified } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 
 function Profile() {
+
+  const [sellBookStatus,setSellBookStatus] = useState(true)
+  const [bookStatus,setBookStatus] = useState(false)
+  const [purchaseStatus,setPurchaseStatus] = useState(false)
+
+
   return (
     <>
      <Header/>
@@ -28,6 +34,93 @@ function Profile() {
 
 
         <p className='flex text-justify'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum harum similique debitis quis minima inventore itaque eum amet laboriosam, dolores autem sed sapiente hic sunt, culpa, a mollitia necessitatibus dolorem!</p>
+
+
+        {/* tabs */}
+
+        <div className='flex justify-center items-center my-8 font-medium'>
+            <p onClick={()=>{setSellBookStatus(true),setBookStatus(false),setPurchaseStatus(false)}} className={sellBookStatus?'text-blue-500 p-4 border-gray-200 border-t border-l border-r rounded cursor-pointer' : 'p-4 border border-gray-200 cursor-pointer'}>Sell Book</p>
+            <p onClick={()=>{setSellBookStatus(false),setBookStatus(true),setPurchaseStatus(false)}} className={bookStatus?'text-blue-500 p-4 border-gray-200 border-t border-l border-r rounded cursor-pointer' : 'p-4 border border-gray-200 cursor-pointer'}>Book Status</p>
+            <p onClick={()=>{setSellBookStatus(false),setBookStatus(false),setPurchaseStatus(true)}} className={purchaseStatus?'text-blue-500 p-4 border-gray-200 border-t border-l border-r rounded cursor-pointer' : 'p-4 border border-gray-200 cursor-pointer'}>Purchase History</p>
+          </div>
+
+
+          {/* Sell Books */}
+          {sellBookStatus &&
+          <div className='md:px-40 p-5'>
+            <div className='flex flex-col shadow bg-gray-300 rounded'>
+              <h1 className='text-center text-2xl my-5 font-bold'>Book Details</h1>
+               <div className='md:grid grid-cols-2'>
+              <div className=''>
+                <input type="text" placeholder='Title' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
+                <input type="text" placeholder='Author' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
+                <input type="text" placeholder='No of Pages' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
+                <input type="text" placeholder='Image Url' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
+                <input type="text" placeholder='Price' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
+                <input type="text" placeholder='Discount Price' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
+                <input type="text" placeholder='Abstract' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
+              </div>
+
+              <div className='md:px-10'>
+                <input type="text" placeholder='Publisher' className='w-full bg-gray-200 mb-4  rounded p-2'/>
+                <input type="text" placeholder='Language' className='w-full bg-gray-200 mb-4  rounded p-2'/>
+                <input type="text" placeholder='ISBN' className='w-full bg-gray-200 mb-4  rounded p-2'/>
+                <input type="text" placeholder='Category' className='w-full bg-gray-200  rounded p-2'/>
+                <div className='flex justify-center items-center mt-10 flex-col'>
+                  <label htmlFor="uploadBookImg">
+                    <input id='uploadBookImg' type="file" style={{display:"none"}}/>
+                    <img  style={{width:"200px",height:"200px"}} src="https://img.freepik.com/premium-vector/file-upload-vector-icon-design-illustration_1174953-75051.jpg" alt="" />
+                  </label>
+                </div>
+                <div className='flex md:justify-end justify-center mt-5 mb-5'>
+                  <button className='bg-amber-700 text-white px-5 py-3 rounded hover:border hover:border-amber-700 hover:bg-white hover:text-amber-600'>Reset</button>
+                  <button className='bg-green-700 text-white px-5 py-3 rounded ms-4'>Submit</button>
+
+                </div>
+              </div>
+            </div>
+            </div>
+           
+          </div>
+          }
+
+          {/* Book Status */}
+          {bookStatus &&
+          <div className='p-10 my-20 shadow rounded'>
+            <div className="bg-gray-200 p-5 rounded mt-4">
+              <div className="md:grid grid-cols-[3fr_1fr]">
+                <div className="px-4">
+                  <h1 className='text-2xl'>Book Title</h1>
+                  <h2>Author Name</h2>
+                  <h3 className='text-blue-600'>₹500</h3>
+                  <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam similique minima itaque blanditiis nisi libero nam sunt illo, perferendis est vel. Explicabo aut excepturi dolores quod minima voluptatem ex ea?</p>
+                  <div className="flex mt-5">
+                    <img src="https://www.psdstamps.com/wp-content/uploads/2022/04/round-pending-stamp-png.png" className='w-full' style={{height:"70px",width:"70px"}} alt="" />
+                    <img src="https://cdn-icons-png.flaticon.com/512/6188/6188726.png" className='w-full' style={{height:"70px",width:"70px"}} alt="" />
+                    <img src="https://juststickers.in/wp-content/uploads/2017/08/seal-of-approval.png" className='w-full' style={{height:"70px",width:"70px"}} alt="" />
+                  </div>
+                </div>
+                <div className="px-4 mt-4 md:mt-4">
+                  <img src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="" className='w-full' style={{height:"250px"}}/>
+                  <div className="flex justify-end mt-4">
+                    <button type='button' className='p-2 rounded bg-red-600 text-white hover:bg-gray-200 hover:text-red-600 hover:border hover:border-red-600'>Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className='flex justify-center items-center flex-col'>
+              <img style={{width:"200px",height:"200px"}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMuFlmxinymbZB0Btt2vdYDeuFwZUiSVwdGQ&s" alt="" />
+              <p className='text-2xl text-red-600'>No Book Added yet</p>
+            </div>
+          </div>
+          }
+
+          {/* purchase history */}
+          {purchaseStatus &&
+          <div>
+            Purchase History
+          </div>
+          }
 
       
      <Footer/> 
