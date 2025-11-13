@@ -104,7 +104,7 @@ function LandingPage() {
           </div>
           
         </div>
-        <p className="mx-60 mb-5">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis magnam incidunt architecto? Consectetur quos, ut tempore minima enim dignissimos. Optio consequatur sequi numquam minus, labore aliquid id a tempora dolorem. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Velit sapiente laudantium unde fugit, veritatis aliquid accusamus ratione dolores quod nulla officiis est eos dolorem perspiciatis soluta harum doloribus laboriosam pariatur!</p>
+        <p className="md:mx-60 mb-5">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis magnam incidunt architecto? Consectetur quos, ut tempore minima enim dignissimos. Optio consequatur sequi numquam minus, labore aliquid id a tempora dolorem. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Velit sapiente laudantium unde fugit, veritatis aliquid accusamus ratione dolores quod nulla officiis est eos dolorem perspiciatis soluta harum doloribus laboriosam pariatur!</p>
       </section>
       <Footer />
     </>
