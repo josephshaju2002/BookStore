@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../Common/Components/Header'
 import Footer from '../../Common/Components/Footer'
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
@@ -7,6 +7,8 @@ import { FaLocationDot } from "react-icons/fa6";
 
 
 function Careers() {
+    const [modalControl, setModalControl] = useState(false);
+
   return (
     <>
     <Header/>
@@ -30,7 +32,7 @@ function Careers() {
               <h1 className='text-xl pb-3 font-bold'>Frontend Developer</h1>
               <hr />
             </div>
-            <button className='text-white p-3 ms-5 flex items-center bg-blue-900'>Apply <FaArrowUpRightFromSquare className='ms-2'/></button>
+            <button onClick={() => setModalControl(true)} className='text-white p-3 ms-5 flex items-center bg-blue-900'>Apply <FaArrowUpRightFromSquare className='ms-2'/></button>
           </div>
           <p className='flex'><FaLocationDot className='me-2 mt-1' /> Kochi</p>
           <p className='text-lg my-2'>Job Type : FULL TIME</p>
@@ -40,6 +42,47 @@ function Careers() {
           <p className='text-lg my-2 text-justify'>Description : Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis rerum error minus nobis ratione provident, vitae minima ipsum consequuntur quos adipisci explicabo iure qui distinctio voluptates debitis, commodi cumque nisi.</p>
         </div>
       </div>
+
+      
+      {modalControl &&
+      <div className='relative z-10 overflow-y-hidden'>
+        <div className='bg-gray-500/75 fixed inset-0'>
+          <div className='flex justify-center items-center min-h-screen scroll-auto'>
+            <div className='bg-white rounded-2xl md:w-200 w-100'>
+              <div className='bg-gray-800 text-white flex justify-between rounded items-center p-3'>
+                  <h3>Application Form</h3>
+                  <button onClick={()=>setModalControl(false)}>X</button>
+              </div>
+              <div className='flex justify-between md:mx-10 md:my-5'>
+                <input className='border md:p-2' type="text" placeholder='Full Name'/>
+                <input className='border md:p-2' type="text" placeholder='Qualification'/>
+              </div>
+              <div className='flex justify-between md:mx-10 md:my-5'>
+                <input className='border md:p-2' type="text" placeholder='Email Id'/>
+                <input className='border md:p-2' type="text" placeholder='Phone'/>
+              </div>
+              <div className='md:mx-10'>
+                <textarea
+                  placeholder="Cover Letter"
+                  className="w-full h-30 p-4 text-lg border"
+                ></textarea>
+              </div>
+              <div className='ms-10 flex flex-col mb-5 me-10'>
+                <p className='text-xl my-3'>Upload Resume:</p> 
+                <div>
+                  <input type="file" className='w-full border p-2'/>
+                </div>
+                
+              </div>
+              <div className='bg-gray-300 mt-5 p-5 flex justify-end'>
+                  <button className='p-3 bg-amber-600 rounded text-white hover:border hover:border-amber-600 hover:bg-white hover:text-amber-600 hover:text-amber-600'>Reset</button>
+                  <button className='p-3 bg-green-600 rounded text-white hover:border hover:border-green-600 hover:bg-white hover:text-green-600 ms-3'>Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+      }
     <Footer/>      
     </>
   )
