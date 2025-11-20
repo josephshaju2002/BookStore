@@ -61,12 +61,32 @@ function Auth({ register }) {
       console.log(result);
       if(result.status == 200){
         toast.success("Login Successfull")
+
+        sessionStorage.setItem("user", JSON.stringify(result.data.existingUser));
+        sessionStorage.setItem("token", result.data.token);
+  
          setUserDetails({
           username: "",
           email: "",
           password: "",
         });
         navigate("/")
+      }else if(result.status == 404){
+        toast.warning(result.response.data)
+         setUserDetails({
+          username: "",
+          email: "",
+          password: "",
+        });
+      }else if(result.status == 401){
+         toast.warning(result.response.data)
+      }else{
+        toast.error("Something Went Wrong")
+         setUserDetails({
+          username: "",
+          email: "",
+          password: "",
+        });
       }
         
       
