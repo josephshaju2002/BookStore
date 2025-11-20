@@ -1,32 +1,78 @@
 import React, { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
-import { registerAPI } from "../../Services/allAPI";
-
+import { loginAPI, registerAPI } from "../../Services/allAPI";
+import { toast } from "react-toastify";
 
 function Auth({ register }) {
   const [pass, setPass] = useState(false);
 
-  const [useDetails,setUserDetails] = useState({
-    username:"",
-    email:"",
-    password:""
-  })
+  const [useDetails, setUserDetails] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
   console.log(useDetails);
 
-  const handleRegister =async () =>{
-    const {username,email,password} = useDetails
-    if (!username || !email || !password){
-      alert("Fill the form completely")
-    }else{
-      const result = await registerAPI(useDetails)
+  const navigate = useNavigate();
+
+
+  const handleRegister = async () => {
+    const { username, email, password } = useDetails;
+    if (!username || !email || !password) {
+      toast.info("Fill the form completely");
+    } else {
+      const result = await registerAPI(useDetails);
       console.log(result);
+      if (result.status == 200) {
+        toast.success("Registered Successfully");
+        setUserDetails({
+          username: "",
+          email: "",
+          password: "",
+        });
+        navigate("/login");
+      } else if (result.status == 404) {
+        toast.warning(result.response.data);
+        setUserDetails({
+          username: "",
+          email: "",
+          password: "",
+        });
+      } else {
+        toast.error("Something Went Wrong");
+        setUserDetails({
+          username: "",
+          email: "",
+          password: "",
+        });
+      }
+    }
+  };
+
+  const handleLogin = async () => {
+    const { email, password } = useDetails;
+    if (!email || !password) {
+      toast.info("Fill the form completely");
+    } else {
+      const result = await loginAPI(useDetails);
+      console.log(result);
+      if(result.status == 200){
+        toast.success("Login Successfull")
+         setUserDetails({
+          username: "",
+          email: "",
+          password: "",
+        });
+        navigate("/")
+      }
+        
       
     }
-  }
-  
+  };
+
   return (
     <>
       <div className="w-full min-h-screen flex justify-center items-center flex-col bg-[url(https://www.baltana.com/files/wallpapers-5/Flower-Background-Wallpaper-16348.jpg)] bg-cover bg-center">
@@ -54,7 +100,12 @@ function Auth({ register }) {
                   <label htmlFor="">UserName</label>
                   <input
                     value={useDetails?.username}
-                    onChange={(e)=>setUserDetails({...useDetails,username: e.target.value})}
+                    onChange={(e) =>
+                      setUserDetails({
+                        ...useDetails,
+                        username: e.target.value,
+                      })
+                    }
                     type="text"
                     placeholder="Username"
                     className="bg-white p-2 w-full rounded mt-2 placeholder-gray-500 text-black"
@@ -65,7 +116,9 @@ function Auth({ register }) {
                 <label htmlFor="">Email</label>
                 <input
                   value={useDetails?.email}
-                  onChange={(e)=>setUserDetails({...useDetails,email: e.target.value})}
+                  onChange={(e) =>
+                    setUserDetails({ ...useDetails, email: e.target.value })
+                  }
                   type="email"
                   placeholder="Email"
                   className="bg-white p-2 w-full rounded mt-2 placeholder-gray-500 text-black"
@@ -77,13 +130,29 @@ function Auth({ register }) {
                 <div className="flex items-center">
                   <input
                     value={useDetails?.password}
-                    onChange={(e)=>setUserDetails({...useDetails,password: e.target.value})}
-                    type={pass?"text":"password"}
+                    onChange={(e) =>
+                      setUserDetails({
+                        ...useDetails,
+                        password: e.target.value,
+                      })
+                    }
+                    type={pass ? "text" : "password"}
                     placeholder="Password"
                     className="bg-white p-2 w-full rounded placeholder-gray-500 text-black"
                   />
-                  {pass?<FaRegEyeSlash onClick={()=>setPass(!pass)} className="text-gray-500 cursor-pointer" style={{marginLeft:"-30px"}}/>:
-                  <FaRegEye onClick={()=>setPass(!pass)} className="text-gray-500 cursor-pointer" style={{marginLeft:"-30px"}} />}
+                  {pass ? (
+                    <FaRegEye
+                      onClick={() => setPass(!pass)}
+                      className="text-gray-500 cursor-pointer"
+                      style={{ marginLeft: "-30px" }}
+                    />
+                  ) : (
+                    <FaRegEyeSlash
+                      onClick={() => setPass(!pass)}
+                      className="text-gray-500 cursor-pointer"
+                      style={{ marginLeft: "-30px" }}
+                    />
+                  )}
                 </div>
               </div>
 
@@ -103,6 +172,7 @@ function Auth({ register }) {
                   </button>
                 ) : (
                   <button
+                    onClick={handleLogin}
                     type="button"
                     className="bg-green-700 p-2 w-full rounded"
                   >
