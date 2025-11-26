@@ -11,8 +11,8 @@ function Header() {
   const [dropdownStatus, setDropdownStatus] = useState(false);
   const [token, setToken] = useState("");
   const [userName, setUserName] = useState("");
-  console.log(token);
-  console.log(userName);
+  // console.log(token);
+  // console.log(userName);
 
   useEffect(() => {
     if (sessionStorage.getItem("token")) {

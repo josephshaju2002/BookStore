@@ -8,7 +8,46 @@ function Profile() {
 
   const [sellBookStatus,setSellBookStatus] = useState(true)
   const [bookStatus,setBookStatus] = useState(false)
+  const [preview,setPreview] = useState("")
   const [purchaseStatus,setPurchaseStatus] = useState(false)
+  const [allUploadImages,setAllUploadImages] = useState([])
+
+  const [bookDetails,setBookDetails] = useState({
+    title : "",author : "",noOfPages : "",imgUrl : "",price : "",dPrice : "",abstract : "",publisher : "",language : "",isbn : "",category : "",uploadImages : []
+  })
+
+  console.log(bookDetails);
+
+  const reset = () =>{
+    setBookDetails({
+      title : "",author : "",noOfPages : "",imgUrl : "",price : "",dPrice : "",abstract : "",publisher : "",language : "",isbn : "",category : "",uploadImages : []
+    })
+    setPreview("")
+    setAllUploadImages([])
+  }
+
+  const handleFile = (e) =>{
+    console.log(e.target.files[0]);
+    const fileArray = bookDetails.uploadImages
+    fileArray.push(e.target.files[0])
+    setBookDetails({...bookDetails,uploadImages: fileArray})
+
+    // convert file to url
+    const url = URL.createObjectURL(e.target.files[0])
+    setPreview(url)
+    let images = allUploadImages
+    images.push(url)
+    setAllUploadImages(images)
+  }
+  console.log(preview);
+  console.log(allUploadImages);
+  
+  
+
+   const handleAddBook = () =>{
+    const {title,author,noOfPages,imgUrl,price,dPrice,abstract,publisher,language,isbn,category,uploadImages} = bookDetails
+  }
+  
 
 
   return (
@@ -52,28 +91,48 @@ function Profile() {
               <h1 className='text-center text-2xl my-5 font-bold'>Book Details</h1>
                <div className='md:grid grid-cols-2'>
               <div className=''>
-                <input type="text" placeholder='Title' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
-                <input type="text" placeholder='Author' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
-                <input type="text" placeholder='No of Pages' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
-                <input type="text" placeholder='Image Url' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
-                <input type="text" placeholder='Price' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
-                <input type="text" placeholder='Discount Price' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
-                <input type="text" placeholder='Abstract' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
+                <input value={bookDetails.title} onChange={(e)=>setBookDetails({...bookDetails,title:e.target.value})} type="text" placeholder='Title' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
+                <input value={bookDetails.author} onChange={(e)=>setBookDetails({...bookDetails,author:e.target.value})} type="text" placeholder='Author' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
+                <input value={bookDetails.noOfPages} onChange={(e)=>setBookDetails({...bookDetails,noOfPages:e.target.value})} type="text" placeholder='No of Pages' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
+                <input value={bookDetails.imgUrl} onChange={(e)=>setBookDetails({...bookDetails,imgUrl:e.target.value})} type="text" placeholder='Image Url' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
+                <input value={bookDetails.price} onChange={(e)=>setBookDetails({...bookDetails,price:e.target.value})} type="text" placeholder='Price' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
+                <input value={bookDetails.dPrice} onChange={(e)=>setBookDetails({...bookDetails,dPrice:e.target.value})} type="text" placeholder='Discount Price' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
+                <input value={bookDetails.abstract} onChange={(e)=>setBookDetails({...bookDetails,abstract:e.target.value})} type="text" placeholder='Abstract' className='w-full bg-gray-200 mb-4 mx-5 rounded p-2'/>
               </div>
 
               <div className='md:px-10'>
-                <input type="text" placeholder='Publisher' className='w-full bg-gray-200 mb-4  rounded p-2'/>
-                <input type="text" placeholder='Language' className='w-full bg-gray-200 mb-4  rounded p-2'/>
-                <input type="text" placeholder='ISBN' className='w-full bg-gray-200 mb-4  rounded p-2'/>
-                <input type="text" placeholder='Category' className='w-full bg-gray-200  rounded p-2'/>
+                <input value={bookDetails.publisher} onChange={(e)=>setBookDetails({...bookDetails,publisher:e.target.value})} type="text" placeholder='Publisher' className='w-full bg-gray-200 mb-4  rounded p-2'/>
+                <input value={bookDetails.language} onChange={(e)=>setBookDetails({...bookDetails,language:e.target.value})} type="text" placeholder='Language' className='w-full bg-gray-200 mb-4  rounded p-2'/>
+                <input value={bookDetails.isbn} onChange={(e)=>setBookDetails({...bookDetails,isbn:e.target.value})} type="text" placeholder='ISBN' className='w-full bg-gray-200 mb-4  rounded p-2'/>
+                <input value={bookDetails.category} onChange={(e)=>setBookDetails({...bookDetails,category:e.target.value})} type="text" placeholder='Category' className='w-full bg-gray-200  rounded p-2'/>
                 <div className='flex justify-center items-center mt-10 flex-col'>
-                  <label htmlFor="uploadBookImg">
-                    <input id='uploadBookImg' type="file" style={{display:"none"}}/>
+                  {preview?
+                    <img  style={{width:"200px",height:"200px"}} src={preview} alt="" />
+                    :
+                    <label htmlFor="uploadBookImg">
+                    <input onChange={(e)=>{handleFile(e)}} id='uploadBookImg' type="file" style={{display:"none"}}/>
                     <img  style={{width:"200px",height:"200px"}} src="https://img.freepik.com/premium-vector/file-upload-vector-icon-design-illustration_1174953-75051.jpg" alt="" />
-                  </label>
+                  </label>}
+
+                    {preview && 
+                    <div className='flex mt-10 items-center gap-5'>
+
+                      {
+                        allUploadImages.map((item)=>(
+                          <img  style={{width:"50px",height:"50px"}} src={item} alt="" />
+                        ))
+                      }
+
+                      
+  
+                     {allUploadImages.length<3 && <label htmlFor="uploadBookImg" className='ms-4'>
+                      <input onChange={(e)=>{handleFile(e)}} id='uploadBookImg' type="file" style={{display:"none"}}/>
+                      <img  style={{width:"50px",height:"50px"}} src="https://img.freepik.com/premium-vector/file-upload-vector-icon-design-illustration_1174953-75051.jpg" alt="" />
+                    </label>}
+                    </div>}
                 </div>
                 <div className='flex md:justify-end justify-center mt-5 mb-5'>
-                  <button className='bg-amber-700 text-white px-5 py-3 rounded hover:border hover:border-amber-700 hover:bg-white hover:text-amber-600'>Reset</button>
+                  <button onClick={reset} className='bg-amber-700 text-white px-5 py-3 rounded hover:border hover:border-amber-700 hover:bg-white hover:text-amber-600'>Reset</button>
                   <button className='bg-green-700 text-white px-5 py-3 rounded ms-4'>Submit</button>
 
                 </div>
