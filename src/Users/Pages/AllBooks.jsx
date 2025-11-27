@@ -1,9 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../Common/Components/Header'
 import Footer from '../../Common/Components/Footer'
 import { Link } from 'react-router-dom'
+import { getAllBooksAPI } from '../../Services/allAPI'
 
 function AllBooks() {
+
+    const [token,setToken] = useState("")
+  
+    const getAllBooks = async (userToken)=>{
+      // request header
+      const reqHeader = {
+        "Authorization" : `Bearer ${userToken}`
+      }
+      try {
+        const result = await getAllBooksAPI(reqHeader)
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+        
+      }
+      
+      
+    }
+
+    useEffect(()=>{
+        if(sessionStorage.getItem("token")){
+          const userToken = (sessionStorage.getItem("token"))
+          setToken(userToken)
+        getAllBooks(userToken)
+        }
+      },[])
+
   return (
     <>
      <Header/>

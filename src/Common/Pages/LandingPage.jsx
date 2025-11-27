@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import { CiSearch } from "react-icons/ci";
 import { Link } from "react-router-dom";
+import { getHomeBookAPI } from "../../Services/allAPI";
 
 function LandingPage() {
+
+  const [homeBook,setHomeBook] = useState([])
+
+  const getHomeBooks = async () =>{
+    const result = await getHomeBookAPI()
+    console.log(result);
+    setHomeBook(result.data)
+    
+  }
+
+  useEffect(()=>{
+    getHomeBooks()
+  },[])
+
   return (
     <>
       <Header />
@@ -35,23 +50,33 @@ function LandingPage() {
       <section className="md:px-40 p-5 flex flex-col justify-center items-center">
         <h1>New Arrivals</h1>
         <h1>Explore Our Latest Collection</h1>
+
+        {homeBook.length>0 ?
         <div className="md:grid grid-cols-4 w-full mt-5">
-          <div className="p-3">
+
+          {homeBook.map((item,index)=>(
+            <div key={index} className="p-3">
             <div className="shadow p-3 rounded">
               <img
                 height={"300px"}
                 width={"100%"}
-                src="https://cdn2.penguin.com.au/covers/original/9781760142247.jpg"
+                src={item.imgUrl}
                 alt=""
               />
               <div className="text-center mt-3">
-                <p className="font-bold text-2xl">Book Name</p>
-                <p className="font-bold text-xl">Author</p>
-                <p className="font-bold">₹599</p>
+                <p className="font-bold text-2xl">{item.title}</p>
+                <p className="font-bold text-xl">{item.author}</p>
+                <p className="font-bold">₹{item.price}</p>
               </div>
             </div>
           </div>
+          ))}
+
         </div>
+        :
+        <p>Loading.......</p> 
+        }
+
         <div className="text-center my-5">
           <Link to={"/all-books"}>
             <button className="px-3 py-2 rounded bg-blue-900 text-white hover:border hover:border-blue-900 hover:text-blue-900 hover:bg-white">
