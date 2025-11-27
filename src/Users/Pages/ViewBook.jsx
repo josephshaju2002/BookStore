@@ -1,11 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../Common/Components/Header";
 import Footer from "../../Common/Components/Footer";
 import { FaRegEye } from "react-icons/fa";
 import { FaBackward } from "react-icons/fa";
+import { Link, useParams } from "react-router-dom";
+import { getABookAPI } from "../../Services/allAPI";
+import SERVERURL from "../../Services/serverURL";
 
 function ViewBook() {
   const [modalControl, setModalControl] = useState(false);
+
+  const [bookDetails,setBookDetails] = useState([])
+
+  const {id} = useParams()
+
+  const getAbook = async () =>{
+    const token = sessionStorage.getItem("token")
+    const reqHeader = {
+        "Authorization" : `Bearer ${token}`
+      }
+      try {
+        const result = await getABookAPI(id,reqHeader)
+        console.log(result);
+        setBookDetails(result.data)
+        
+      } catch (error) {
+        console.log(error);
+        
+      }
+  }
+
+  useEffect(()=>{
+    getAbook()
+  },[])
   return (
     <>
       <Header />
@@ -18,42 +45,40 @@ function ViewBook() {
             <div>
               <img
                 className="w-full h-100"
-                src="https://penji.co/wp-content/uploads/2023/01/4-silhouette-667x1024.jpg.webp"
+                src={bookDetails?.imgUrl}
                 alt=""
               />
             </div>
             <div className="px-4">
               <h1 className="text-center font-medium text-2xl">
-                Crooked Pillow
+                {bookDetails?.title}
               </h1>
               <p className="text-center text-blue-500">
-                Itamar Vieira (Author)
+                {bookDetails?.author}
               </p>
               <div className="md:flex justify-between mt-10">
-                <p>Publisher : </p>
-                <p>Language : </p>
-                <p>No:of Pages : </p>
+                <p>Publisher : {bookDetails?.publisher}</p>
+                <p>Language : {bookDetails?.language}</p>
+                <p>No:of Pages : {bookDetails?.noOfPages}</p>
               </div>
               <div className="md:flex justify-between mt-10">
-                <p>Seller Mail : </p>
-                <p>Real Price : </p>
-                <p>ISBN : </p>
+                <p>Seller Mail : {bookDetails?.userMail}</p>
+                <p>Real Price : {bookDetails?.price}</p>
+                <p>ISBN : {bookDetails?.isbn}</p>
               </div>
               <p className="text-justify mt-10">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
-                reprehenderit, exercitationem placeat consequuntur delectus
-                veritatis libero velit illo odio quasi eos id fugiat fugit
-                assumenda dicta voluptates dolor sunt recusandae ea fuga, quia
-                nisi ab nam? Eligendi, consequatur odit ab, repellendus quasi
-                cumque nihil illo quod beatae nostrum, totam vero. Lorem ipsum
-                dolor, sit amet consectetur adipisicing elit. Exercitationem,
-                quas?
+                {bookDetails?.abstract}
               </p>
               <div className="mt-10 flex justify-end">
-                <button className="flex px-4 py-3 bg-blue-800 rounded text-white hover:bg-white hover:text-blue-800 hover:border hover:border-blue-800">
+                  <Link to={"/all-books"}>
+                   <button className="flex px-4 py-3 bg-blue-800 rounded text-white hover:bg-white hover:text-blue-800 hover:border hover:border-blue-800">
                   <FaBackward className="mt-1 me-2" />
                   Back
                 </button>
+                  
+                  </Link>
+
+               
                 <button className="px-4 ms-5 py-3 bg-green-800 rounded text-white hover:bg-white hover:text-green-800 hover:border hover:border-green-800">
                   Buy ₹
                 </button>
@@ -75,9 +100,16 @@ function ViewBook() {
                 <div className="relative p-5">
                   <p className="text-blue-600">Camera click of the book in the hand of seller</p>
                 </div>
+
                 <div className="md:flex flex-wrap my-4 overflow-y hidden">
-                  <img className="mx-2 md:mb-0 mb-2" height={"250px0"} width={"250px"} src="https://penji.co/wp-content/uploads/2023/01/4-silhouette-667x1024.jpg.webp" alt="" />
+                  {bookDetails?.uploadImages.length > 0?
+                    bookDetails?.uploadImages?.map(img=>(
+                      <img className="mx-2 md:mb-0 mb-2" height={"250px0"} width={"250px"} src={`${SERVERURL}/imgUploads/${img}`} alt="" />
+                    ))
+                  
+                  :
                   <p className="font-bold text-red-700 ms-5">User uploaded book images are not available</p>
+                  }
                 </div>
               </div>
             </div>
