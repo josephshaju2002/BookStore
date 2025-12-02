@@ -25,11 +25,23 @@ export const addBookAPI = async (reqBody,reqHeader)=>{
 }
 
 // get all books
-export const getAllBooksAPI = async (reqHeader)=>{
-    return await commonAPI("GET",`${SERVERURL}/all-books`,{},reqHeader)
+export const getAllBooksAPI = async (searchKey,reqHeader)=>{
+    return await commonAPI("GET",`${SERVERURL}/all-books?search=${searchKey}`,{},reqHeader)
 }
 
-// get all books
+// get a books
 export const getABookAPI = async (bookid,reqHeader)=>{
     return await commonAPI("GET",`${SERVERURL}/view-book/${bookid}`,{},reqHeader)
 }
+
+// get user books
+export const getUserBooksAPI = async (reqHeader)=>{
+    return await commonAPI("GET",`${SERVERURL}/userbooks`,{},reqHeader)
+}
+
+
+
+// delete user added 
+export const deleteAUserAddedBookAPI = async (id) => {
+  return await commonAPI("DELETE", `${SERVERURL}/delete-book/${id}`);
+};
