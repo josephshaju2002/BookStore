@@ -8,6 +8,7 @@ import {
   addBookAPI,
   deleteAUserAddedBookAPI,
   getUserBooksAPI,
+  getUserBroughtAPI,
 } from "../../Services/allAPI";
 
 function Profile() {
@@ -20,6 +21,7 @@ function Profile() {
   const [username, setUsername] = useState("");
   const [userAddedBook, setUserAddedBook] = useState([]);
   const [deleteBookStatus, setDeleteBookStatus] = useState(false);
+  const [broughtBook, setBroughtBook] = useState([]);
 
   const [bookDetails, setBookDetails] = useState({
     title: "",
@@ -36,7 +38,7 @@ function Profile() {
     uploadImages: [],
   });
 
-  console.log(bookDetails);
+  // console.log(bookDetails);
 
   const reset = () => {
     setBookDetails({
@@ -170,6 +172,21 @@ function Profile() {
     }
   };
 
+  const getUserBroughtBook = async () => {
+    try {
+      const reqHeader = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      const result = await getUserBroughtAPI(reqHeader);
+      console.log(result);
+      setBroughtBook(result.data);
+      console.log(broughtBook);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
       setToken(sessionStorage.getItem("token"));
@@ -181,15 +198,13 @@ function Profile() {
   }, []);
 
   useEffect(() => {
-  if (bookStatus || deleteBookStatus || purchaseStatus) {
-    getUserAddedbooks();
-  }
-}, [bookStatus, deleteBookStatus, purchaseStatus]);
+    if (bookStatus == true) {
+      getUserAddedbooks(); 
+    }
+    getUserBroughtBook();
+  }, [bookStatus, deleteBookStatus, purchaseStatus]);
 
-
-  const loggedUserMail = JSON.parse(sessionStorage.getItem("existingUser")).email;
-
-
+ 
   return (
     <>
       <Header />
@@ -548,47 +563,44 @@ function Profile() {
 
       {/* purchase history */}
       {purchaseStatus && 
-  <div className="p-10 my-20 shadow rounded">
+        <div className="p-4 sm:p-10 my-10 shadow rounded">
+          {broughtBook?.length > 0 ? 
+            broughtBook?.map((item => (
+              <div className="bg-gray-200 p-4 sm:p-8 rounded mt-4">
+                <div className="grid md:grid-cols-[3fr_1fr] gap-6">
+                  <div className="px-2">
+                    <h1 className="text-2xl">{item?.title}</h1>
+                    <h2>{item?.author}</h2>
+                    <h3 className="text-blue-600">₹{item?.price}</h3>
+                    <p>{item?.abstract}</p>
 
-    {userAddedBook.filter(book => book.boughtBy === loggedUserMail).length > 0 ? (
+                  </div>
 
-      userAddedBook
-        .filter(book => book.boughtBy === loggedUserMail)
-        .map((book, index) => (
-          <div key={index} className="bg-gray-200 p-5 rounded mt-4">
-            <div className="md:grid grid-cols-[3fr_1fr]">
-              <div className="px-4">
-                <h1 className="text-2xl">{book.title}</h1>
-                <h2>{book.author}</h2>
-                <h3 className="text-blue-600">₹{book.price}</h3>
-                <p>{book.abstract}</p>
+                  <div className="px-4 mt-4 md:mt-4">
+                    <img
+                      src={item?.imgUrl}
+                      alt=""
+                      className="w-full"
+                      style={{ height: "250px", objectFit: "cover" }}
+                    />
+
+                    
+                  </div>
+                </div>
               </div>
-
-              <div className="px-4 mt-4 md:mt-4">
-                <img
-                  src={book.imgUrl}
-                  alt=""
-                  className="w-full"
-                  style={{ height: "250px", objectFit: "cover" }}
-                />
-              </div>
+            ))
+          ) : (
+            <div className="flex justify-center items-center flex-col">
+              <img
+                style={{ width: "200px", height: "200px" }}
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMuFlmxinymbZB0Btt2vdYDeuFwZUiSVwdGQ&s"
+                alt=""
+              />
+              <p className="text-2xl text-red-600">No Book Added yet</p>
             </div>
-          </div>
-        ))
-
-    ) : (
-      <div className="flex justify-center items-center flex-col">
-        <img
-          style={{ width: "200px", height: "200px" }}
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMuFlmxinymbZB0Btt2vdYDeuFwZUiSVwdGQ&s"
-          alt=""
-        />
-        <p className="text-2xl text-red-600">No Book Bought Yet</p>
-      </div>
-    )}
-  </div>
-}
-
+          )}
+        </div>
+      }
 
       <Footer />
     </>

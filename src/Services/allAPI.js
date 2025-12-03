@@ -45,3 +45,9 @@ export const getUserBooksAPI = async (reqHeader)=>{
 export const deleteAUserAddedBookAPI = async (id) => {
   return await commonAPI("DELETE", `${SERVERURL}/delete-book/${id}`);
 };
+
+
+// get user brought books
+export const getUserBroughtAPI = async (reqHeader)=>{
+    return await commonAPI("GET",`${SERVERURL}/user-brought-book`,{},reqHeader)
+}
