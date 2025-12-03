@@ -51,3 +51,8 @@ export const deleteAUserAddedBookAPI = async (id) => {
 export const getUserBroughtAPI = async (reqHeader)=>{
     return await commonAPI("GET",`${SERVERURL}/user-brought-book`,{},reqHeader)
 }
+
+// update user profile 
+export const updateUserProfileAPI = async (reqBody,reqHeader) => {
+    return await commonAPI("PUT",`${SERVERURL}/update-user-profile`,reqBody,reqHeader)
+}

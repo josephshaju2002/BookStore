@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Header from "../../Common/Components/Header";
 import Footer from "../../Common/Components/Footer";
 import { MdVerified } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
 import {
   addBookAPI,
@@ -10,6 +9,7 @@ import {
   getUserBooksAPI,
   getUserBroughtAPI,
 } from "../../Services/allAPI";
+import EdiyProfile from "../Components/EdiyProfile";
 
 function Profile() {
   const [sellBookStatus, setSellBookStatus] = useState(true);
@@ -232,10 +232,11 @@ function Profile() {
           <MdVerified className="text-blue-500 ms-3 text-xl" />
         </div>
         <div>
-          <button className="flex px-4 py-3 font-bold border border-blue-200 text-blue-600">
+          {/* <button className="flex px-4 py-3 font-bold border border-blue-200 text-blue-600">
             <FaRegEdit className="mt-1 me-2" />
             Edit
-          </button>
+          </button> */}
+          <EdiyProfile/>
         </div>
       </div>
 
