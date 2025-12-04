@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../../Common/Components/Header";
 import Footer from "../../Common/Components/Footer";
 import { MdVerified } from "react-icons/md";
@@ -10,6 +10,7 @@ import {
   getUserBroughtAPI,
 } from "../../Services/allAPI";
 import EdiyProfile from "../Components/EdiyProfile";
+import { userProfileUpdate } from "../../context/ContextShare";
 
 function Profile() {
   const [sellBookStatus, setSellBookStatus] = useState(true);
@@ -74,6 +75,9 @@ function Profile() {
   };
   // console.log(preview);
   // console.log(allUploadImages);
+
+   const {updateProfileStatus} = useContext(userProfileUpdate)
+
 
   const handleAddBook = async () => {
     const {
@@ -195,7 +199,7 @@ function Profile() {
       const name = JSON.parse(sessionStorage.getItem("existingUser"));
       setUsername(name.username);
     }
-  }, []);
+  }, [updateProfileStatus]);
 
   useEffect(() => {
     if (bookStatus == true) {
@@ -204,7 +208,6 @@ function Profile() {
     getUserBroughtBook();
   }, [bookStatus, deleteBookStatus, purchaseStatus]);
 
- 
   return (
     <>
       <Header />
@@ -240,7 +243,7 @@ function Profile() {
         </div>
       </div>
 
-      <p className="flex text-justify">
+      <p className="flex text-justify mx-5">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum harum
         similique debitis quis minima inventore itaque eum amet laboriosam,
         dolores autem sed sapiente hic sunt, culpa, a mollitia necessitatibus

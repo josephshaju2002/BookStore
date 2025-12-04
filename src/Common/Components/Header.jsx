@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaFacebookSquare } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { TiThMenu } from "react-icons/ti";
 import { IoPersonOutline } from "react-icons/io5";
+import { userProfileUpdate } from "../../context/ContextShare";
 
 function Header() {
   const [listStatus, setlistStatus] = useState(false);
@@ -14,6 +15,8 @@ function Header() {
   // console.log(token);
   // console.log(userName);
 
+  const {updateProfileStatus} = useContext(userProfileUpdate)
+
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
       setToken(sessionStorage.getItem("token"));
@@ -22,7 +25,7 @@ function Header() {
       const name = JSON.parse(sessionStorage.getItem("existingUser"));
       setUserName(name.username);
     }
-  }, []);
+  }, [updateProfileStatus]);
 
   return (
     <>
