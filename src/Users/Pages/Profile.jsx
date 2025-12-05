@@ -11,6 +11,7 @@ import {
 } from "../../Services/allAPI";
 import EdiyProfile from "../Components/EdiyProfile";
 import { userProfileUpdate } from "../../context/ContextShare";
+import SERVERURL from "../../Services/serverURL";
 
 function Profile() {
   const [sellBookStatus, setSellBookStatus] = useState(true);
@@ -24,6 +25,7 @@ function Profile() {
   const [deleteBookStatus, setDeleteBookStatus] = useState(false);
   const [broughtBook, setBroughtBook] = useState([]);
   const [bio,setBio] = useState("")
+  const [profilePic, setProfilePic] = useState("");
 
   const [bookDetails, setBookDetails] = useState({
     title: "",
@@ -200,6 +202,7 @@ function Profile() {
       const name = JSON.parse(sessionStorage.getItem("existingUser"));
       setUsername(name.username);
       setBio(name.bio)
+      setProfilePic(name.profile);
     }
   }, [updateProfileStatus]);
 
@@ -226,7 +229,7 @@ function Profile() {
       >
         <img
           style={{ width: "200px", height: "200px", borderRadius: "50%" }}
-          src="https://cdn-icons-png.flaticon.com/512/219/219983.png"
+          src={profilePic? `${SERVERURL}/imgUploads/${profilePic}` : "https://cdn-icons-png.flaticon.com/512/219/219983.png"}
           alt=""
         />
       </div>
