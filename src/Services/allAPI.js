@@ -56,3 +56,14 @@ export const getUserBroughtAPI = async (reqHeader)=>{
 export const updateUserProfileAPI = async (reqBody,reqHeader) => {
     return await commonAPI("PUT",`${SERVERURL}/update-user-profile`,reqBody,reqHeader)
 }
+
+// .............................admin........................
+// get all books in admin
+export const getAllUserBooksAdminAPI = async ()=>{
+    return await commonAPI("GET",`${SERVERURL}/get-allbooks`)
+}
+
+// update book status
+export const updateBookStatusAPI = async (id)=>{
+    return await commonAPI("PUT",`${SERVERURL}/update-book/${id}`)
+}

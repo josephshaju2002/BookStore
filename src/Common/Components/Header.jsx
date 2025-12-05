@@ -2,10 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaFacebookSquare } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { TiThMenu } from "react-icons/ti";
 import { IoPersonOutline } from "react-icons/io5";
 import { userProfileUpdate } from "../../context/ContextShare";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 
 function Header() {
   const [listStatus, setlistStatus] = useState(false);
@@ -16,6 +19,16 @@ function Header() {
   // console.log(userName);
 
   const {updateProfileStatus} = useContext(userProfileUpdate)
+
+    const navigate = useNavigate();
+
+  const handleLogout = () => {
+  sessionStorage.removeItem("token");
+  sessionStorage.removeItem("existingUser"); 
+  toast.success("Logged out successfully");
+  navigate ("/");  
+};
+
 
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
@@ -79,7 +92,7 @@ function Header() {
                     </button>
                   </Link>
 
-                  <button className="block px-4 py-2 text-sm text-gray-70">
+                  <button onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-70">
                     Logout
                   </button>
                 </div>

@@ -23,6 +23,7 @@ function Profile() {
   const [userAddedBook, setUserAddedBook] = useState([]);
   const [deleteBookStatus, setDeleteBookStatus] = useState(false);
   const [broughtBook, setBroughtBook] = useState([]);
+  const [bio,setBio] = useState("")
 
   const [bookDetails, setBookDetails] = useState({
     title: "",
@@ -198,6 +199,7 @@ function Profile() {
     if (sessionStorage.getItem("existingUser")) {
       const name = JSON.parse(sessionStorage.getItem("existingUser"));
       setUsername(name.username);
+      setBio(name.bio)
     }
   }, [updateProfileStatus]);
 
@@ -244,10 +246,7 @@ function Profile() {
       </div>
 
       <p className="flex text-justify mx-5">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum harum
-        similique debitis quis minima inventore itaque eum amet laboriosam,
-        dolores autem sed sapiente hic sunt, culpa, a mollitia necessitatibus
-        dolorem!
+        {bio}
       </p>
 
       {/* tabs */}
