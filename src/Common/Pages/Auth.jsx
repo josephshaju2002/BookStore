@@ -66,13 +66,17 @@ function Auth({ register }) {
         sessionStorage.setItem("token", result.data.token);
 
         toast.success("Login Successfull")
+        if(result.data.existingUser.role == "admin"){
+          navigate("/admin-home")
+        }else{
+        navigate("/")
+        }
   
          setUserDetails({
           username: "",
           email: "",
           password: "",
         });
-        navigate("/")
       }else if(result.status == 404){
         toast.warning(result.response.data)
          setUserDetails({
