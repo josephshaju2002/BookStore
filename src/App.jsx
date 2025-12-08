@@ -14,6 +14,8 @@ import ViewBook from "./Users/Pages/ViewBook";
 import { useEffect, useState } from "react";
 import Loader from "./Common/Pages/Loader";
 import { ToastContainer } from "react-toastify";
+import PaymentSuccess from "./Users/Pages/PaymentSuccess";
+import PaymentError from "./Users/Pages/PaymentError";
 
 function App() {
   const [loader, setLoader] = useState(true);
@@ -39,6 +41,8 @@ function App() {
         <Route path={"/careers"} element={<Careers />} />
         <Route path={"/profile"} element={<Profile />} />
         <Route path={"/view-books/:id"} element={<ViewBook />} />
+        <Route path={"/paymentsuccess"} element={<PaymentSuccess />} />
+        <Route path={"/paymenterror"} element={<PaymentError />} />
 
         {/* Admin */}
         <Route path={"/admin-home"} element={<AdminHome />} />

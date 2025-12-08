@@ -1,8 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { FaPowerOff } from "react-icons/fa";
+import { toast } from 'react-toastify';
 
 function AdminHeader() {
+  
+    const handleLogout = () => {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("existingUser"); 
+    toast.success("Logged out successfully");
+    navigate ("/");  
+  };
   return (
     <>
        <div className="grid grid-cols-3 p-3">
@@ -18,7 +26,7 @@ function AdminHeader() {
         </div>
         {/* login */}
         <div className='md:flex justify-end items-center hidden'>
-            <Link to={"/login"}><button className='flex justify-between gap-2 items-center border border-black rounded px-3 py-2 ms-3 hover:bg-black hover:text-white'><FaPowerOff /> Logout</button></Link>
+            <Link to={"/login"}><button onClick={handleLogout} className='flex justify-between gap-2 items-center border border-black rounded px-3 py-2 ms-3 hover:bg-black hover:text-white'><FaPowerOff /> Logout</button></Link>
 
         </div>
       </div>

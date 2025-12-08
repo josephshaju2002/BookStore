@@ -5,6 +5,7 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import { loginAPI, registerAPI } from "../../Services/allAPI";
 import { toast } from "react-toastify";
+import { GoogleLogin } from "@react-oauth/google";
 
 function Auth({ register }) {
   const [pass, setPass] = useState(false);
@@ -17,7 +18,6 @@ function Auth({ register }) {
   console.log(useDetails);
 
   const navigate = useNavigate();
-
 
   const handleRegister = async () => {
     const { username, email, password } = useDetails;
@@ -59,43 +59,42 @@ function Auth({ register }) {
     } else {
       const result = await loginAPI(useDetails);
       console.log(result);
-      if(result.status == 200){
-        
-
-        sessionStorage.setItem("existingUser", JSON.stringify(result.data.existingUser));
+      if (result.status == 200) {
+        sessionStorage.setItem(
+          "existingUser",
+          JSON.stringify(result.data.existingUser)
+        );
         sessionStorage.setItem("token", result.data.token);
 
-        toast.success("Login Successfull")
-        if(result.data.existingUser.role == "admin"){
-          navigate("/admin-home")
-        }else{
-        navigate("/")
+        toast.success("Login Successfull");
+        if (result.data.existingUser.role == "admin") {
+          navigate("/admin-home");
+        } else {
+          navigate("/");
         }
-  
-         setUserDetails({
+
+        setUserDetails({
           username: "",
           email: "",
           password: "",
         });
-      }else if(result.status == 404){
-        toast.warning(result.response.data)
-         setUserDetails({
+      } else if (result.status == 404) {
+        toast.warning(result.response.data);
+        setUserDetails({
           username: "",
           email: "",
           password: "",
         });
-      }else if(result.status == 401){
-         toast.warning(result.response.data)
-      }else{
-        toast.error("Something Went Wrong")
-         setUserDetails({
+      } else if (result.status == 401) {
+        toast.warning(result.response.data);
+      } else {
+        toast.error("Something Went Wrong");
+        setUserDetails({
           username: "",
           email: "",
           password: "",
         });
       }
-        
-      
     }
   };
 
@@ -206,7 +205,20 @@ function Auth({ register }) {
                   </button>
                 )}
               </div>
-              <div>{/* Google Authentication */}</div>
+
+              {!register &&<div className="mt-4">
+                {/* Google Authentication */}
+                <GoogleLogin
+                  onSuccess={(credentialResponse) => {
+                    console.log(credentialResponse);
+                  }}
+                  onError={() => {
+                    console.log("Login Failed");
+                  }}
+                />
+                
+              </div>}
+
               <div className="mt-3">
                 {register ? (
                   <p>

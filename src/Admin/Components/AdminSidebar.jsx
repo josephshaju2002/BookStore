@@ -21,7 +21,7 @@ function AdminSidebar() {
     return (
         <>
             <div className='bg-gray-200 w-full md:min-h-screen flex items-center flex-col'>
-                <div>
+                <div className='mt-5'>
                     
                         <img
                             style={{ height: "150px", width: "150px", borderRadius: "50%" }}
