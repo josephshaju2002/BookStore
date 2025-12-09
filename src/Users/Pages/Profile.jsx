@@ -202,7 +202,8 @@ function Profile() {
       const name = JSON.parse(sessionStorage.getItem("existingUser"));
       setUsername(name.username);
       setBio(name.bio)
-      setProfilePic(name.profile);
+       const existingProfile = JSON.parse(sessionStorage.getItem("existingUser"))
+      setProfilePic(existingProfile.profile)
     }
   }, [updateProfileStatus]);
 
@@ -229,7 +230,10 @@ function Profile() {
       >
         <img
           style={{ width: "200px", height: "200px", borderRadius: "50%" }}
-          src={profilePic? `${SERVERURL}/imgUploads/${profilePic}` : "https://cdn-icons-png.flaticon.com/512/219/219983.png"}
+          src={profilePic == "" ?  "https://cdn-icons-png.flaticon.com/512/219/219983.png"
+            : profilePic.startsWith("https") ?  profilePic
+            : `${SERVERURL}/imgUploads/${profilePic}`
+          }
           alt=""
         />
       </div>

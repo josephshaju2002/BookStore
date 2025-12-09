@@ -8,6 +8,7 @@ import { IoPersonOutline } from "react-icons/io5";
 import { userProfileUpdate } from "../../context/ContextShare";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import SERVERURL from "../../Services/serverURL";
 
 
 function Header() {
@@ -15,6 +16,7 @@ function Header() {
   const [dropdownStatus, setDropdownStatus] = useState(false);
   const [token, setToken] = useState("");
   const [userName, setUserName] = useState("");
+  const [userProfile, setUserProfile] = useState("");
   // console.log(token);
   // console.log(userName);
 
@@ -37,6 +39,8 @@ function Header() {
     if (sessionStorage.getItem("existingUser")) {
       const name = JSON.parse(sessionStorage.getItem("existingUser"));
       setUserName(name.username);
+      const existingProfile = JSON.parse(sessionStorage.getItem("existingUser"))
+      setUserProfile(existingProfile.profile)
     }
   }, [updateProfileStatus]);
 
@@ -70,16 +74,20 @@ function Header() {
               </button>
             </Link>
           ) : (
-            <div className="relative inline-block text-left">
+            <div className="relative inline-block text-left border rounded-lg">
               <button
                 onClick={() => setDropdownStatus(!dropdownStatus)}
                 className="w-full flex items-center bg-white px-3 py-2 shadow-xs hover:bg-gray-100"
               >
                 <img
+                className="me-3"
                   style={{ borderRadius: "50%" }}
                   width={"50px"}
                   height={"50px"}
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s"
+                  src={userProfile == "" ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s"
+                    : userProfile.startsWith("https") ? userProfile
+                    :`${SERVERURL}/imgUploads/${userProfile}`
+                  }
                   alt=""
                 />
                 <p>{userName}</p>
