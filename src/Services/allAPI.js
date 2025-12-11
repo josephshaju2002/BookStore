@@ -62,6 +62,13 @@ export const updateUserProfileAPI = async (reqBody,reqHeader) => {
     return await commonAPI("PUT",`${SERVERURL}/update-user-profile`,reqBody,reqHeader)
 }
 
+
+// make payment called view book when buy btn clicked
+export const makePaymentAPI = async (reqBody,reqHeader) => {
+    return await commonAPI("PUT",`${SERVERURL}/payment`,reqBody,reqHeader)
+}
+
+
 // .............................admin........................
 // get all books in admin
 export const getAllUserBooksAdminAPI = async ()=>{

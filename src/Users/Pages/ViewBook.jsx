@@ -6,8 +6,16 @@ import { FaBackward } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { getABookAPI } from "../../Services/allAPI";
 import SERVERURL from "../../Services/serverURL";
+import {loadStripe} from '@stripe/stripe-js';
 
 function ViewBook() {
+
+  const handlePurchase = async () =>{
+    const stripe = await loadStripe('pk_test_51ScgVdLYoYtcZIUgEOKzhK5dbvdobnJSjdRoMJtoJt211V82eVGKKeWeZCyoPhxaXBGfm4nhucbDv91QSl4W8q5o00qUl4NSq5');
+    console.log(stripe);
+    
+
+  }
   const [modalControl, setModalControl] = useState(false);
 
   const [bookDetails,setBookDetails] = useState([])
@@ -79,7 +87,7 @@ function ViewBook() {
                   </Link>
 
                
-                <button className="px-4 ms-5 py-3 bg-green-800 rounded text-white hover:bg-white hover:text-green-800 hover:border hover:border-green-800">
+                <button onClick={handlePurchase} type="button" className="px-4 ms-5 py-3 bg-green-800 rounded text-white hover:bg-white hover:text-green-800 hover:border hover:border-green-800">
                   Buy ₹
                 </button>
               </div>
