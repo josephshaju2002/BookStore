@@ -1,14 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { FaPowerOff } from "react-icons/fa";
 import { toast } from 'react-toastify';
+import { userAuthContext } from '../../context/AuthContext';
+
 
 function AdminHeader() {
+
+    const {setAuthorizedUser} = useContext(userAuthContext)
+  
   
     const handleLogout = () => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("existingUser"); 
     toast.success("Logged out successfully");
+    setAuthorizedUser(false)
     navigate ("/");  
   };
   return (

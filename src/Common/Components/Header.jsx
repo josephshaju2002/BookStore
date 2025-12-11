@@ -9,6 +9,7 @@ import { userProfileUpdate } from "../../context/ContextShare";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import SERVERURL from "../../Services/serverURL";
+import { userAuthContext } from "../../context/AuthContext";
 
 
 function Header() {
@@ -20,6 +21,8 @@ function Header() {
   // console.log(token);
   // console.log(userName);
 
+  const {setAuthorizedUser} = useContext(userAuthContext)
+
   const {updateProfileStatus} = useContext(userProfileUpdate)
 
     const navigate = useNavigate();
@@ -28,6 +31,7 @@ function Header() {
   sessionStorage.removeItem("token");
   sessionStorage.removeItem("existingUser"); 
   toast.success("Logged out successfully");
+  setAuthorizedUser(false)
   navigate ("/");  
 };
 

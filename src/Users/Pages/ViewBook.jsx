@@ -4,43 +4,62 @@ import Footer from "../../Common/Components/Footer";
 import { FaRegEye } from "react-icons/fa";
 import { FaBackward } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
-import { getABookAPI } from "../../Services/allAPI";
+import { getABookAPI, makePaymentAPI } from "../../Services/allAPI";
 import SERVERURL from "../../Services/serverURL";
-import {loadStripe} from '@stripe/stripe-js';
+import { loadStripe } from "@stripe/stripe-js";
 
 function ViewBook() {
+  const [token, setToken] = useState("");
 
-  const handlePurchase = async () =>{
-    const stripe = await loadStripe('pk_test_51ScgVdLYoYtcZIUgEOKzhK5dbvdobnJSjdRoMJtoJt211V82eVGKKeWeZCyoPhxaXBGfm4nhucbDv91QSl4W8q5o00qUl4NSq5');
+  const handlePurchase = async () => {
+    const stripe = await loadStripe(
+      "pk_test_51ScgVdLYoYtcZIUgEOKzhK5dbvdobnJSjdRoMJtoJt211V82eVGKKeWeZCyoPhxaXBGfm4nhucbDv91QSl4W8q5o00qUl4NSq5"
+    );
     console.log(stripe);
-    
+    // const token = sessionStorage.getItem("token")
 
-  }
-  const [modalControl, setModalControl] = useState(false);
-
-  const [bookDetails,setBookDetails] = useState([])
-
-  const {id} = useParams()
-
-  const getAbook = async () =>{
-    const token = sessionStorage.getItem("token")
-    const reqHeader = {
-        "Authorization" : `Bearer ${token}`
-      }
+    if (token) {
+      const reqHeader = {
+        Authorization: `Bearer ${token}`,
+      };
       try {
-        const result = await getABookAPI(id,reqHeader)
+        const result = await makePaymentAPI(bookDetails, reqHeader);
         console.log(result);
-        setBookDetails(result.data)
-        
+        const checkoutSessionUrl = result.data.checkoutSessionUrl;
+        if (checkoutSessionUrl) {
+          window.location.href = checkoutSessionUrl;
+        }
       } catch (error) {
         console.log(error);
-        
       }
-  }
+    }
+  };
+  const [modalControl, setModalControl] = useState(false);
 
-  useEffect(()=>{
-    getAbook()
-  },[])
+  const [bookDetails, setBookDetails] = useState([]);
+
+  const { id } = useParams();
+
+  const getAbook = async () => {
+    const token = sessionStorage.getItem("token");
+    const reqHeader = {
+      Authorization: `Bearer ${token}`,
+    };
+    try {
+      const result = await getABookAPI(id, reqHeader);
+      console.log(result);
+      setBookDetails(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAbook();
+    if (sessionStorage.getItem("token")) {
+      setToken(sessionStorage.getItem("token"));
+    }
+  }, []);
   return (
     <>
       <Header />
@@ -51,19 +70,13 @@ function ViewBook() {
           </div>
           <div className="md:grid grid-cols-[1fr_3fr] w-full">
             <div>
-              <img
-                className="w-full h-100"
-                src={bookDetails?.imgUrl}
-                alt=""
-              />
+              <img className="w-full h-100" src={bookDetails?.imgUrl} alt="" />
             </div>
             <div className="px-4">
               <h1 className="text-center font-medium text-2xl">
                 {bookDetails?.title}
               </h1>
-              <p className="text-center text-blue-500">
-                {bookDetails?.author}
-              </p>
+              <p className="text-center text-blue-500">{bookDetails?.author}</p>
               <div className="md:flex justify-between mt-10">
                 <p>Publisher : {bookDetails?.publisher}</p>
                 <p>Language : {bookDetails?.language}</p>
@@ -74,20 +87,20 @@ function ViewBook() {
                 <p>Real Price : {bookDetails?.price}</p>
                 <p>ISBN : {bookDetails?.isbn}</p>
               </div>
-              <p className="text-justify mt-10">
-                {bookDetails?.abstract}
-              </p>
+              <p className="text-justify mt-10">{bookDetails?.abstract}</p>
               <div className="mt-10 flex justify-end">
-                  <Link to={"/all-books"}>
-                   <button className="flex px-4 py-3 bg-blue-800 rounded text-white hover:bg-white hover:text-blue-800 hover:border hover:border-blue-800">
-                  <FaBackward className="mt-1 me-2" />
-                  Back
-                </button>
-                  
-                  </Link>
+                <Link to={"/all-books"}>
+                  <button className="flex px-4 py-3 bg-blue-800 rounded text-white hover:bg-white hover:text-blue-800 hover:border hover:border-blue-800">
+                    <FaBackward className="mt-1 me-2" />
+                    Back
+                  </button>
+                </Link>
 
-               
-                <button onClick={handlePurchase} type="button" className="px-4 ms-5 py-3 bg-green-800 rounded text-white hover:bg-white hover:text-green-800 hover:border hover:border-green-800">
+                <button
+                  onClick={handlePurchase}
+                  type="button"
+                  className="px-4 ms-5 py-3 bg-green-800 rounded text-white hover:bg-white hover:text-green-800 hover:border hover:border-green-800"
+                >
                   Buy ₹
                 </button>
               </div>
@@ -103,21 +116,30 @@ function ViewBook() {
               <div className="bg-white rounded-2xl md:w-250 w-100">
                 <div className="bg-black text-white flex justify-between items-center p-3">
                   <h3>Book Images</h3>
-                  <button onClick={()=>setModalControl(false)}>X</button>
+                  <button onClick={() => setModalControl(false)}>X</button>
                 </div>
                 <div className="relative p-5">
-                  <p className="text-blue-600">Camera click of the book in the hand of seller</p>
+                  <p className="text-blue-600">
+                    Camera click of the book in the hand of seller
+                  </p>
                 </div>
 
                 <div className="md:flex flex-wrap my-4 overflow-y hidden">
-                  {bookDetails?.uploadImages.length > 0?
-                    bookDetails?.uploadImages?.map(img=>(
-                      <img className="mx-2 md:mb-0 mb-2" height={"250px0"} width={"250px"} src={`${SERVERURL}/imgUploads/${img}`} alt="" />
+                  {bookDetails?.uploadImages.length > 0 ? (
+                    bookDetails?.uploadImages?.map((img) => (
+                      <img
+                        className="mx-2 md:mb-0 mb-2"
+                        height={"250px0"}
+                        width={"250px"}
+                        src={`${SERVERURL}/imgUploads/${img}`}
+                        alt=""
+                      />
                     ))
-                  
-                  :
-                  <p className="font-bold text-red-700 ms-5">User uploaded book images are not available</p>
-                  }
+                  ) : (
+                    <p className="font-bold text-red-700 ms-5">
+                      User uploaded book images are not available
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

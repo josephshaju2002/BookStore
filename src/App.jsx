@@ -11,14 +11,17 @@ import AllBooks from "./Users/Pages/AllBooks";
 import Careers from "./Users/Pages/Careers";
 import Profile from "./Users/Pages/Profile";
 import ViewBook from "./Users/Pages/ViewBook";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Loader from "./Common/Pages/Loader";
 import { ToastContainer } from "react-toastify";
 import PaymentSuccess from "./Users/Pages/PaymentSuccess";
 import PaymentError from "./Users/Pages/PaymentError";
+import { userAuthContext } from "./context/AuthContext";
 
 function App() {
   const [loader, setLoader] = useState(true);
+
+  const { role } = useContext(userAuthContext);
 
   useEffect(() => {
     setTimeout(() => {
@@ -34,27 +37,31 @@ function App() {
         <Route path={"/contact"} element={<Contact />} />
         <Route path={"/login"} element={<Auth />} />
         <Route path={"/register"} element={<Auth register />} />
-        <Route path={"/*"} element={<Pnf />} />
+        <Route path={"/careers"} element={<Careers />} />
 
         {/* User */}
-        <Route path={"/all-books"} element={<AllBooks />} />
-        <Route path={"/careers"} element={<Careers />} />
-        <Route path={"/profile"} element={<Profile />} />
-        <Route path={"/view-books/:id"} element={<ViewBook />} />
-        <Route path={"/paymentsuccess"} element={<PaymentSuccess />} />
-        <Route path={"/paymenterror"} element={<PaymentError />} />
-
+       {role == "user" &&
+       <>
+          <Route path={"/all-books"} element={<AllBooks />} />
+          <Route path={"/profile"} element={<Profile />} />
+          <Route path={"/view-books/:id"} element={<ViewBook />} />
+          <Route path={"/paymentsuccess"} element={<PaymentSuccess />} />
+          <Route path={"/paymenterror"} element={<PaymentError />} />
+       </>
+}
         {/* Admin */}
-        <Route path={"/admin-home"} element={<AdminHome />} />
-        <Route path={"/admin-careers"} element={<AdminCareers />} />
-        <Route path={"/admin-books"} element={<AdminBooks />} />
-        <Route path={"/admin-settings"} element={<AdminSettings />} />
+        {role == "admin" &&
+        <>
+          <Route path={"/admin-home"} element={<AdminHome />} />
+          <Route path={"/admin-careers"} element={<AdminCareers />} />
+          <Route path={"/admin-books"} element={<AdminBooks />} />
+          <Route path={"/admin-settings"} element={<AdminSettings />} />
+        </>
+        }
+
+        <Route path={"/*"} element={<Pnf />} />
       </Routes>
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        theme="colored"
-      />
+      <ToastContainer position="top-center" autoClose={3000} theme="colored" />
     </>
   );
 }

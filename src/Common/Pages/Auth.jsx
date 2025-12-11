@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { FaRegEyeSlash } from "react-icons/fa";
@@ -7,6 +7,7 @@ import { googleLoginAPI, loginAPI, registerAPI } from "../../Services/allAPI";
 import { toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import { userAuthContext } from "../../context/AuthContext";
 
 function Auth({ register }) {
   const [pass, setPass] = useState(false);
@@ -17,6 +18,8 @@ function Auth({ register }) {
     password: "",
   });
   console.log(useDetails);
+
+  const {setAuthorizedUser} = useContext(userAuthContext)
 
   const navigate = useNavigate();
 
@@ -68,6 +71,7 @@ function Auth({ register }) {
         sessionStorage.setItem("token", result.data.token);
 
         toast.success("Login Successfull");
+        setAuthorizedUser(true)
         if (result.data.existingUser.role == "admin") {
           navigate("/admin-home");
         } else {
@@ -118,6 +122,7 @@ function Auth({ register }) {
         );
         sessionStorage.setItem("token", result.data.token);
         toast.success("Login Successfull");
+        setAuthorizedUser(true)
         if (result.data.existingUser.role == "admin") {
           navigate("/admin-home");
         } else {
